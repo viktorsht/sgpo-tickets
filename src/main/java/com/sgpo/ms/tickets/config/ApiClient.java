@@ -20,7 +20,7 @@ public class ApiClient {
 
     public UserDataResponse getUserData(String token) {
         // URL do microserviço de usuários
-        String userServiceUrl = "http://localhost:8081/users/me";
+        String userServiceUrl = "http://3.143.208.119:8081/users/me";
 
         // Chamada para o microserviço de usuários usando RestTemplate
         ResponseEntity<UserDataResponse> response = restTemplate.exchange(
@@ -38,7 +38,7 @@ public class ApiClient {
     }
 
     public TravelRoutes getTravelRoutes(String token, String routeId) {
-        String routeURL = "http://localhost:8082/routes/" + routeId;
+        String routeURL = "http://3.14.147.151:8082/routes/" + routeId;
         ResponseEntity<TravelRoutes> response = restTemplate.exchange(
                 routeURL,
                 HttpMethod.GET,
