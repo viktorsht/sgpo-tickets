@@ -35,15 +35,28 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/health").permitAll() 
-                        .anyRequest().authenticated() // Todas as rotas precisam do token
-                )
-                .csrf(csrf -> csrf.disable())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .securityMatcher("/**")
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/health").permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf(csrf -> csrf.disable())
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(Customizer.withDefaults())
+            );
 
         return http.build();
+
+        // http
+        //         .authorizeHttpRequests(auth -> auth
+        //                 .requestMatchers(HttpMethod.GET, "/health").permitAll() 
+        //                 .anyRequest().authenticated() // Todas as rotas precisam do token
+        //         )
+        //         .csrf(csrf -> csrf.disable())
+        //         .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        //         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // return http.build();
     }
 
     @Bean
