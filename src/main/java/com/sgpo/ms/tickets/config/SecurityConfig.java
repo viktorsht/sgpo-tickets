@@ -36,6 +36,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/health").permitAll() 
                         .anyRequest().authenticated() // Todas as rotas precisam do token
                 )
                 .csrf(csrf -> csrf.disable())
