@@ -13,18 +13,23 @@ import com.sgpo.ms.tickets.dto.UserDataResponse;
 public class ApiClient {
 
     private final RestTemplate restTemplate;
+    private final ConfigServiceClient configServiceClient;
 
-    public ApiClient(RestTemplate restTemplate) {
+    public ApiClient(RestTemplate restTemplate, ConfigServiceClient configServiceClient) {
         this.restTemplate = restTemplate;
+        this.configServiceClient = configServiceClient;
     }
 
     public UserDataResponse getUserData(String token) {
         // URL do microserviço de usuários
-        String userServiceUrl = "http://3.143.208.119:8081/users/me";
+        // String userServiceUrl = "http://api.service.users:8080/users/me";
+
+        String baseUrl = configServiceClient.getServiceUrl("users");
+        String url = baseUrl + "/users/me";
 
         // Chamada para o microserviço de usuários usando RestTemplate
         ResponseEntity<UserDataResponse> response = restTemplate.exchange(
-                userServiceUrl,
+                url,
                 HttpMethod.GET,
                 new HttpEntity<>(getHeaders(token)),
                 UserDataResponse.class // Classe de destino para desserialização
@@ -38,9 +43,11 @@ public class ApiClient {
     }
 
     public TravelRoutes getTravelRoutes(String token, String routeId) {
-        String routeURL = "http://3.14.147.151:8082/routes/" + routeId;
+        // String routeURL = "http://api.service.routes:8082/routes/" + routeId;
+        String baseUrl = configServiceClient.getServiceUrl("routes");
+        String url = baseUrl + "/routes/" + routeId;
         ResponseEntity<TravelRoutes> response = restTemplate.exchange(
-                routeURL,
+                url,
                 HttpMethod.GET,
                 new HttpEntity<>(getHeaders(token)),
                 TravelRoutes.class // Classe de destino para desserialização
